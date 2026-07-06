@@ -17,7 +17,6 @@ class BaseResponse(BaseModel):
     error: Optional[str]
     timestamp: str
     path: str
-    
 def create_response(request ,status_code :int, message: str, data = None, error = None):
     response = BaseResponse(
         status_code = status_code,
