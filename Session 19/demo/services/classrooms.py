@@ -1,9 +1,12 @@
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 from models.classrooms import ClassroomModel
 from schemas.classrooms import CreateClass, UpdateClass
 
 def get_all_classes_service(db: Session):
-    list_classes = db.query(ClassroomModel).all()
+    list_classes = db.query(ClassroomModel).options(
+        joinedload(ClassroomModel.students),
+        joinedload(ClassroomModel.teacher)
+    ).all()
     return list_classes
 
 def get_class_by_id_service(db:Session, id: int):

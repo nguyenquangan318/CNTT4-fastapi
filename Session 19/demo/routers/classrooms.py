@@ -2,17 +2,14 @@ from fastapi import Depends, HTTPException, status, APIRouter
 from sqlalchemy.orm import Session
 from database import get_db
 from services.classrooms import delete_class_service, update_class_service, create_class_service, get_all_classes_service, get_class_by_id_service
-from schemas.classrooms import CreateClass, UpdateClass
+from schemas.classrooms import CreateClass, UpdateClass, FullClassResponse
 
 router = APIRouter(prefix='/classrooms', tags=['classrooms'])
         
-@router.get('/')
+@router.get('/', response_model=list[FullClassResponse])
 def get_all_classes(db: Session = Depends(get_db)):
     list_classes = get_all_classes_service(db)
-    return {
-        "message": "Success!",
-        "data": list_classes
-    }
+    return list_classes
     
 @router.get("/{id}")
 def get_class_by_id(id:int, db: Session = Depends(get_db)):
